@@ -301,7 +301,13 @@ $stats = $client->getStats();
 <body>
     <div class="container-fluid">
         <div class="row">
-            <!-- Enhanced Sidebar -->
+             <!-- Sidebar -->
+ 
+
+<!-- Sidebar Overlay for Mobile -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+<!-- Enhanced Sidebar -->
 <div class="col-md-3 col-lg-2 px-0 sidebar" id="sidebar">
     <!-- Sidebar Header -->
     <div class="sidebar-header">
@@ -314,7 +320,7 @@ $stats = $client->getStats();
                 <i class="fas fa-building"></i>
             </div>
             <div>
-                <div class="logo-text" style="margin-top:40px">Calyda Accounts</div>
+                <div class="logo-text" style="margin-top:40px;">Calyda Accounts</div>
                 <div class="company-tagline">Professional Tax Solutions</div>
             </div>
         </div>
@@ -323,12 +329,12 @@ $stats = $client->getStats();
     <!-- Navigation -->
     <nav class="sidebar-nav">
         <div class="nav-item">
-            <a class="nav-link active" href="dashboard.php">
+            <a class="nav-link" href="./dashboard.php">
                 <i class="fas fa-tachometer-alt"></i>Dashboard
             </a>
         </div>
         <div class="nav-item">
-            <a class="nav-link" href="clients.php">
+            <a class="nav-link active" href="./clients.php">
                 <i class="fas fa-users"></i>Client Management
             </a>
         </div>
@@ -338,17 +344,17 @@ $stats = $client->getStats();
             </a>
         </div>
         <div class="nav-item">
-            <a class="nav-link" href="reports.php">
+            <a class="nav-link" href="./reports.php">
                 <i class="fas fa-chart-bar"></i>Reports
             </a>
         </div>
         <div class="nav-item">
-            <a class="nav-link" href="settings.php">
+            <a class="nav-link" href="./settings.php">
                 <i class="fas fa-cog"></i>Settings
             </a>
         </div>
         <div class="nav-item">
-            <a class="nav-link" href="logout.php">
+            <a class="nav-link" href="./logout.php">
                 <i class="fas fa-sign-out-alt"></i>Logout
             </a>
         </div>
@@ -381,11 +387,13 @@ $stats = $client->getStats();
             <!-- Main Content -->
             <div class="col-md-9 col-lg-10 main-content">
                 <!-- Mobile Menu Toggle -->
+                 <!-- Mobile Menu Toggle -->
                 <div class="d-md-none mb-3">
                     <button class="btn btn-primary" type="button" onclick="toggleSidebar()">
                         <i class="fas fa-bars"></i> Menu
                     </button>
                 </div>
+              
 
                 <!-- Success Message -->
                 <?php if (isset($successMessage)): ?>
@@ -1240,6 +1248,7 @@ function showToast(message, type) {
     `;
     document.body.appendChild(toast);
     setTimeout(() => toast.remove(), 5000);
+    
 }
 </script>
 </body>

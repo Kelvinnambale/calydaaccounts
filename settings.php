@@ -277,10 +277,7 @@ $preferences = json_decode($user['preferences'] ?? '{}', true);
     <div class="container-fluid">
         <div class="row">
             <!-- Sidebar -->
-            <button class="mobile-menu-toggle d-md-none" onclick="toggleSidebar()">
-                <i class="fas fa-bars"></i>
-            </button>
-
+            
             <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
 
             <div class="col-md-3 col-lg-2 px-0 sidebar" id="sidebar">
@@ -294,7 +291,7 @@ $preferences = json_decode($user['preferences'] ?? '{}', true);
                             <i class="fas fa-building"></i>
                         </div>
                         <div>
-                            <div class="logo-text">Calyda Accounts</div>
+                            <div class="logo-text" style="margin-top:40px;">Calyda Accounts</div>
                             <div class="company-tagline">Professional Tax Solutions</div>
                         </div>
                     </div>
@@ -988,7 +985,7 @@ function exportData() {
 
 function openSettings() {
     toggleQuickActions();
-    window.location.href = '../settings.php';
+    window.location.href = './settings.php';
 }
 
 // Update the existing showToast function to handle 'info' type

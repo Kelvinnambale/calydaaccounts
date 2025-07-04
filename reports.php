@@ -242,27 +242,13 @@ if (!empty($filters['date_from']) || !empty($filters['date_to'])) {
     }
 }
         @media (max-width: 768px) {
-            .sidebar {
-                position: absolute;
-                left: -250px;
-                width: 250px;
-                z-index: 1000;
-                transition: left 0.3s;
-            }
-            .sidebar.show {
-                left: 0;
-            }
+            
             .main-content {
                 margin-left: 0;
             }
         }
         @media print {
-            .no-print {
-                display: none !important;
-            }
-            .sidebar {
-                display: none !important;
-            }
+            
             .main-content {
                 margin-left: 0 !important;
                 padding: 0 !important;
@@ -271,102 +257,93 @@ if (!empty($filters['date_from']) || !empty($filters['date_to'])) {
     </style>
 </head>
 <body>
-    <div class="container-fluid">
+ <div class="container-fluid">
+       <div class="container-fluid">
         <div class="row">
             <!-- Sidebar -->
-            <!-- Mobile Menu Toggle Button -->
-<button class="mobile-menu-toggle d-md-none" onclick="toggleSidebar()">
-    <i class="fas fa-bars"></i>
-</button>
+            
+            <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
 
-<!-- Sidebar Overlay for Mobile -->
-<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+            <div class="col-md-3 col-lg-2 px-0 sidebar" id="sidebar">
+                <div class="sidebar-header">
+                    <button class="sidebar-close" onclick="closeSidebar()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    
+                    <div class="logo-container">
+                        <div class="logo-icon">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <div>
+                            <div class="logo-text" style="margin-top:40px;">Calyda Accounts</div>
+                            <div class="company-tagline">Professional Tax Solutions</div>
+                        </div>
+                    </div>
+                </div>
 
-<!-- Enhanced Sidebar -->
-<div class="col-md-3 col-lg-2 px-0 sidebar" id="sidebar">
-    <!-- Sidebar Header -->
-    <div class="sidebar-header">
-        <button class="sidebar-close" onclick="closeSidebar()">
-            <i class="fas fa-times"></i>
-        </button>
-        
-        <div class="logo-container">
-            <div class="logo-icon">
-                <i class="fas fa-building"></i>
-            </div>
-            <div>
-                <div class="logo-text">Calyda Accounts</div>
-                <div class="company-tagline">Professional Tax Solutions</div>
-            </div>
-        </div>
-    </div>
+                <nav class="sidebar-nav">
+                    <div class="nav-item">
+                        <a class="nav-link" href="dashboard.php">
+                            <i class="fas fa-tachometer-alt"></i>Dashboard
+                        </a>
+                    </div>
+                    <div class="nav-item">
+                        <a class="nav-link" href="clients.php">
+                            <i class="fas fa-users"></i>Client Management
+                        </a>
+                    </div>
+                    <div class="nav-item">
+                        <a class="nav-link" href="vat_management.php">
+                            <i class="fas fa-receipt"></i>VAT Management
+                        </a>
+                    </div>
+                    <div class="nav-item">
+                        <a class="nav-link active" href="reports.php">
+                            <i class="fas fa-chart-bar"></i>Reports
+                        </a>
+                    </div>
+                    <div class="nav-item">
+                        <a class="nav-link" href="settings.php">
+                            <i class="fas fa-cog"></i>Settings
+                        </a>
+                    </div>
+                    <div class="nav-item">
+                        <a class="nav-link" href="logout.php">
+                            <i class="fas fa-sign-out-alt"></i>Logout
+                        </a>
+                    </div>
+                </nav>
 
-    <!-- Navigation -->
-    <nav class="sidebar-nav">
-        <div class="nav-item">
-            <a class="nav-link" href="./dashboard.php">
-                <i class="fas fa-tachometer-alt"></i>Dashboard
-            </a>
-        </div>
-        <div class="nav-item">
-            <a class="nav-link" href="./clients.php">
-                <i class="fas fa-users"></i>Client Management
-            </a>
-        </div>
-        <div class="nav-item">
-            <a class="nav-link" href="./vat_management.php">
-                <i class="fas fa-receipt"></i>VAT Management
-            </a>
-        </div>
-        <div class="nav-item">
-            <a class="nav-link active" href="">
-                <i class="fas fa-chart-bar"></i>Reports
-            </a>
-        </div>
-        <div class="nav-item">
-            <a class="nav-link" href="./settings.php">
-                <i class="fas fa-cog"></i>Settings
-            </a>
-        </div>
-        <div class="nav-item">
-            <a class="nav-link" href="./logout.php">
-                <i class="fas fa-sign-out-alt"></i>Logout
-            </a>
-        </div>
-    </nav>
+                <div class="system-status">
+                    <div class="uptime-display">
+                        <div class="uptime-title">System Uptime</div>
+                        <div class="uptime-value">
+                            <div class="status-indicator"></div>
+                            <span id="systemUptime">Loading...</span>
+                        </div>
+                    </div>
 
-    <!-- System Status Section -->
-    <div class="system-status">
-        <div class="uptime-display">
-            <div class="uptime-title">System Uptime</div>
-            <div class="uptime-value">
-                <div class="status-indicator"></div>
-                <span id="systemUptime">Loading...</span>
+                    <div class="user-info d-flex align-items-center">
+                        <div class="user-avatar">
+                            <?php echo strtoupper(substr($_SESSION['full_name'], 0, 1)); ?>
+                        </div>
+                        <div class="user-details">
+                            <div class="user-name"><?php echo htmlspecialchars($_SESSION['full_name']); ?></div>
+                            <div class="user-role">Tax Professional</div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-
-        <!-- User Info -->
-        <div class="user-info d-flex align-items-center">
-            <div class="user-avatar">
-                <?php echo strtoupper(substr($_SESSION['full_name'], 0, 1)); ?>
-            </div>
-            <div class="user-details">
-                <div class="user-name"><?php echo htmlspecialchars($_SESSION['full_name']); ?></div>
-                <div class="user-role">Tax Professional</div>
-            </div>
-        </div>
-    </div>
-</div>
 
             <!-- Main Content -->
             <div class="col-md-9 col-lg-10 main-content">
                 <!-- Mobile Menu Toggle -->
-                <div class="d-md-none mb-3 no-print">
+                <div class="d-md-none mb-3">
                     <button class="btn btn-primary" type="button" onclick="toggleSidebar()">
                         <i class="fas fa-bars"></i> Menu
                     </button>
                 </div>
-
+              
                 <!-- Header -->
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h2><i class="fas fa-chart-bar me-2"></i>Reports & Analytics</h2>
@@ -782,10 +759,16 @@ if (!empty($filters['date_from']) || !empty($filters['date_to'])) {
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="./js/script.js"></script>
     <script>
         function toggleSidebar() {
             document.getElementById('sidebar').classList.toggle('show');
         }
+
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.remove('show');
+        }
+
 
         function selectReport(reportType) {
             const url = new URL(window.location);
@@ -924,6 +907,33 @@ function toggleQuickActions() {
         icon.classList.remove('fa-plus');
         icon.classList.add('fa-times');
         quickActionsOpen = true;
+    }
+}
+// Enhanced sidebar toggle function
+function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    
+    if (sidebar && overlay) {
+        sidebar.classList.toggle('show');
+        overlay.classList.toggle('show');
+        
+        // Prevent body scroll when sidebar is open on mobile
+        if (window.innerWidth <= 768) {
+            document.body.style.overflow = sidebar.classList.contains('show') ? 'hidden' : 'auto';
+        }
+    }
+}
+
+// Close sidebar function
+function closeSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    
+    if (sidebar && overlay) {
+        sidebar.classList.remove('show');
+        overlay.classList.remove('show');
+        document.body.style.overflow = 'auto';
     }
 }
 
