@@ -251,18 +251,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action'])) {
         case 'get_filter_options':
             $options = [];
             
-            // Get client types
-            $stmt = $db->prepare("SELECT DISTINCT client_type FROM clients WHERE client_type IS NOT NULL ORDER BY client_type");
-            $stmt->execute();
-            $options['client_types'] = $stmt->fetchAll(PDO::FETCH_COLUMN);
+            // Use constants for client types instead of querying database
+            $options['client_types'] = array_keys(CLIENT_TYPES);
             
-            // Get counties
-            $stmt = $db->prepare("SELECT DISTINCT county FROM clients WHERE county IS NOT NULL ORDER BY county");
-            $stmt->execute();
-            $options['counties'] = $stmt->fetchAll(PDO::FETCH_COLUMN);
+            // Use constants for counties instead of querying database
+            $options['counties'] = KENYAN_COUNTIES;
             
-            // Get ETIMS statuses
-            $stmt = $db->prepare("SELECT DISTINCT etims_status FROM clients WHERE etims_status IS NOT NULL ORDER BY etims_status");
+            // Get ETIMS statuses from database (as these might be dynamic)
+            $stmt = $db->prepare("SELECT DISTINCT etims_status FROM clients WHERE etims_status IS NOT NULL AND etims_status != '' ORDER BY etims_status");
             $stmt->execute();
             $options['etims_statuses'] = $stmt->fetchAll(PDO::FETCH_COLUMN);
             
@@ -275,6 +271,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action'])) {
             $stmt = $db->prepare("SELECT DISTINCT record_year FROM vat_records ORDER BY record_year DESC");
             $stmt->execute();
             $options['years'] = $stmt->fetchAll(PDO::FETCH_COLUMN);
+            
+            // Add tax obligations from constants
+            $options['tax_obligations'] = array_keys(TAX_OBLIGATIONS);
             
             header('Content-Type: application/json');
             echo json_encode($options);

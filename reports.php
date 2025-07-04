@@ -37,6 +37,11 @@ $filters = [
     'search' => $_GET['search'] ?? ''
 ];
 
+// Ensure tax_obligation filter is properly formatted for JSON_CONTAINS if used
+if (!empty($filters['tax_obligation'])) {
+    $filters['tax_obligation'] = $filters['tax_obligation'];
+}
+
 // Pagination parameters
 $page = isset($_GET['page']) && is_numeric($_GET['page']) && $_GET['page'] > 0 ? (int)$_GET['page'] : 1;
 $perPage = 10; // Items per page
@@ -348,9 +353,6 @@ if (!empty($filters['date_from']) || !empty($filters['date_to'])) {
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h2><i class="fas fa-chart-bar me-2"></i>Reports & Analytics</h2>
                     <div class="no-print">
-                        <button class="btn export-btn me-2" onclick="exportReport('pdf')">
-                            <i class="fas fa-file-pdf me-2"></i>Export PDF
-                        </button>
                         <button class="btn export-btn" onclick="exportReport('excel')">
                             <i class="fas fa-file-excel me-2"></i>Export Excel
                         </button>
@@ -425,6 +427,18 @@ if (!empty($filters['date_from']) || !empty($filters['date_to'])) {
                                     <?php foreach (KENYAN_COUNTIES as $county): ?>
                                         <option value="<?php echo $county; ?>" <?php echo $filters['county'] == $county ? 'selected' : ''; ?>>
                                             <?php echo $county; ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            
+                            <div class="col-md-2">
+                                <label class="form-label">Tax Obligation</label>
+                                <select class="form-select" name="tax_obligation">
+                                    <option value="">All Obligations</option>
+                                    <?php foreach (TAX_OBLIGATIONS as $key => $value): ?>
+                                        <option value="<?php echo $key; ?>" <?php echo $filters['tax_obligation'] == $key ? 'selected' : ''; ?>>
+                                            <?php echo $value; ?>
                                         </option>
                                     <?php endforeach; ?>
                                 </select>

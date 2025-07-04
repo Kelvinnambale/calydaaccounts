@@ -636,43 +636,45 @@ $preferences = json_decode($user['preferences'] ?? '{}', true);
 
         document.getElementById('confirmPassword').addEventListener('input', checkPasswordMatch);
 
-        // Data management functions
-        let filterOptions = {};
+       // Export Modal JavaScript - Merged with Constants Integration
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize export modal when it's shown
+    const exportModal = document.getElementById('exportModal');
+    if (exportModal) {
+        exportModal.addEventListener('shown.bs.modal', function() {
+            initializeExportModal();
+        });
+    }
+});
+
+// Global variable to store filter options
+let filterOptions = {};
 
 // Initialize export modal
 function initializeExportModal() {
-    // Load filter options
+    // Load filter options from constants and database
     fetch('ajax/export_handler.php?action=get_filter_options')
         .then(response => response.json())
         .then(data => {
             filterOptions = data;
             populateFilterDropdowns();
+            setupExportTypeHandlers();
         })
         .catch(error => {
             console.error('Error loading filter options:', error);
-            showToast('Error loading filter options', 'error');
+            showNotification('Error loading filter options', 'error');
         });
-    
-    // Add event listeners for export type changes
-    document.querySelectorAll('input[name="export_type"]').forEach(radio => {
-        radio.addEventListener('change', function() {
-            toggleFilterSections(this.value);
-            updateExportPreview();
-        });
-    });
-    
-    // Add change listeners to all filter inputs
-    document.querySelectorAll('#exportForm input, #exportForm select').forEach(input => {
-        input.addEventListener('change', updateExportPreview);
-    });
 }
 
+// Populate all filter dropdowns with the fetched data
 function populateFilterDropdowns() {
-    // Populate client types
+    // Client Types - using constants
     const clientTypeSelects = ['clientType', 'combinedClientType'];
     clientTypeSelects.forEach(selectId => {
         const select = document.getElementById(selectId);
-        if (select) {
+        if (select && filterOptions.client_types) {
+            // Clear existing options and add default
+            select.innerHTML = '<option value="">All Types</option>';
             filterOptions.client_types.forEach(type => {
                 const option = document.createElement('option');
                 option.value = type;
@@ -681,12 +683,14 @@ function populateFilterDropdowns() {
             });
         }
     });
-    
-    // Populate counties
+
+    // Counties - using constants
     const countySelects = ['county', 'combinedCounty'];
     countySelects.forEach(selectId => {
         const select = document.getElementById(selectId);
-        if (select) {
+        if (select && filterOptions.counties) {
+            // Clear existing options and add default
+            select.innerHTML = '<option value="">All Counties</option>';
             filterOptions.counties.forEach(county => {
                 const option = document.createElement('option');
                 option.value = county;
@@ -695,10 +699,11 @@ function populateFilterDropdowns() {
             });
         }
     });
-    
-    // Populate ETIMS statuses
+
+    // ETIMS Status - from database (dynamic)
     const etimsSelect = document.getElementById('etimsStatus');
-    if (etimsSelect) {
+    if (etimsSelect && filterOptions.etims_statuses) {
+        etimsSelect.innerHTML = '<option value="">All Statuses</option>';
         filterOptions.etims_statuses.forEach(status => {
             const option = document.createElement('option');
             option.value = status;
@@ -706,10 +711,11 @@ function populateFilterDropdowns() {
             etimsSelect.appendChild(option);
         });
     }
-    
-    // Populate VAT clients
+
+    // VAT Clients - from database
     const vatClientSelect = document.getElementById('vatClient');
-    if (vatClientSelect) {
+    if (vatClientSelect && filterOptions.vat_clients) {
+        vatClientSelect.innerHTML = '<option value="">All VAT Clients</option>';
         filterOptions.vat_clients.forEach(client => {
             const option = document.createElement('option');
             option.value = client.id;
@@ -717,10 +723,11 @@ function populateFilterDropdowns() {
             vatClientSelect.appendChild(option);
         });
     }
-    
-    // Populate years
+
+    // Years - from database
     const yearSelect = document.getElementById('recordYear');
-    if (yearSelect) {
+    if (yearSelect && filterOptions.years) {
+        yearSelect.innerHTML = '<option value="">All Years</option>';
         filterOptions.years.forEach(year => {
             const option = document.createElement('option');
             option.value = year;
@@ -728,20 +735,45 @@ function populateFilterDropdowns() {
             yearSelect.appendChild(option);
         });
     }
+
+    // Tax Obligations - using constants (if you want to add a filter for this)
+    if (filterOptions.tax_obligations) {
+        console.log('Tax obligations available:', filterOptions.tax_obligations);
+        // You can use this data if you want to add a tax obligations filter
+    }
 }
 
+// Setup export type change handlers
+function setupExportTypeHandlers() {
+    const exportTypeRadios = document.querySelectorAll('input[name="export_type"]');
+    
+    exportTypeRadios.forEach(radio => {
+        radio.addEventListener('change', function() {
+            toggleFilterSections(this.value);
+            updateExportPreview();
+        });
+    });
+
+    // Setup filter change handlers for preview updates
+    const filterInputs = document.querySelectorAll('#exportForm input, #exportForm select');
+    filterInputs.forEach(input => {
+        input.addEventListener('change', updateExportPreview);
+    });
+}
+
+// Show relevant filter sections based on export type
 function toggleFilterSections(exportType) {
     const clientFilters = document.getElementById('clientFilters');
     const vatFilters = document.getElementById('vatFilters');
     const combinedFilters = document.getElementById('combinedFilters');
-    
-    // Hide all sections first
+
+    // Hide all filter sections first
     clientFilters.style.display = 'none';
     vatFilters.style.display = 'none';
     combinedFilters.style.display = 'none';
-    
-    // Show relevant sections
-    switch(exportType) {
+
+    // Show relevant sections based on export type
+    switch (exportType) {
         case 'clients':
             clientFilters.style.display = 'block';
             break;
@@ -754,6 +786,7 @@ function toggleFilterSections(exportType) {
     }
 }
 
+// Update export preview based on selected filters
 function updateExportPreview() {
     const exportType = document.querySelector('input[name="export_type"]:checked').value;
     const preview = document.getElementById('exportPreview');
@@ -781,6 +814,7 @@ function updateExportPreview() {
     preview.innerHTML = previewText;
 }
 
+// Get active filters for all export types
 function getActiveFilters() {
     const filters = [];
     const exportType = document.querySelector('input[name="export_type"]:checked').value;
@@ -804,13 +838,25 @@ function getActiveFilters() {
         const clientId = document.getElementById('vatClient').value;
         const year = document.getElementById('recordYear').value;
         const month = document.getElementById('recordMonth').value;
+        const vatDateFrom = document.getElementById('vatDateFrom').value;
+        const vatDateTo = document.getElementById('vatDateTo').value;
+        const minAmount = document.getElementById('minAmount').value;
+        const maxAmount = document.getElementById('maxAmount').value;
         
         if (clientId) {
             const clientName = document.getElementById('vatClient').options[document.getElementById('vatClient').selectedIndex].text;
             filters.push(`Client: ${clientName}`);
         }
         if (year) filters.push(`Year: ${year}`);
-        if (month) filters.push(`Month: ${document.getElementById('recordMonth').options[document.getElementById('recordMonth').selectedIndex].text}`);
+        if (month) {
+            const months = ['', 'January', 'February', 'March', 'April', 'May', 'June',
+                           'July', 'August', 'September', 'October', 'November', 'December'];
+            filters.push(`Month: ${months[parseInt(month)]}`);
+        }
+        if (vatDateFrom) filters.push(`Date From: ${vatDateFrom}`);
+        if (vatDateTo) filters.push(`Date To: ${vatDateTo}`);
+        if (minAmount) filters.push(`Min Amount: ${minAmount}`);
+        if (maxAmount) filters.push(`Max Amount: ${maxAmount}`);
     } else if (exportType === 'client_with_vat') {
         const county = document.getElementById('combinedCounty').value;
         const clientType = document.getElementById('combinedClientType').value;
@@ -824,54 +870,91 @@ function getActiveFilters() {
     return filters;
 }
 
+// Process export function - Enhanced with proper error handling
 function processExport() {
     const form = document.getElementById('exportForm');
     const formData = new FormData(form);
     
     // Show loading state
-    const exportBtn = document.querySelector('#exportModal .btn-primary');
+    const exportBtn = document.querySelector('#exportModal .btn-primary, [onclick="processExport()"]');
     const originalText = exportBtn.innerHTML;
-    exportBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Exporting...';
+    exportBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
     exportBtn.disabled = true;
     
-    // Create a temporary form for submission
-    const tempForm = document.createElement('form');
-    tempForm.method = 'POST';
-    tempForm.action = 'ajax/export_handler.php';
-    tempForm.style.display = 'none';
-    
-    // Add all form data to temp form
-    for (let [key, value] of formData.entries()) {
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = key;
-        input.value = value;
-        tempForm.appendChild(input);
-    }
-    
-    document.body.appendChild(tempForm);
-    tempForm.submit();
-    document.body.removeChild(tempForm);
-    
-    // Reset button after a delay
-    setTimeout(() => {
+    // Use fetch for better error handling
+    fetch('ajax/export_handler.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        if (response.ok) {
+            // If successful, the response will be a CSV file
+            return response.blob();
+        } else if (response.status === 204) {
+            // No content - no data found
+            return response.json();
+        } else {
+            throw new Error('Export failed');
+        }
+    })
+    .then(result => {
+        if (result instanceof Blob) {
+            // Create download link for CSV
+            const url = window.URL.createObjectURL(result);
+            const a = document.createElement('a');
+            a.href = url;
+            
+            // Get filename from response headers or generate one
+            const exportType = document.querySelector('input[name="export_type"]:checked').value;
+            const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
+            a.download = `${exportType}_export_${timestamp}.csv`;
+            
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+            
+            // Close modal and show success message
+            const modal = bootstrap.Modal.getInstance(document.getElementById('exportModal'));
+            modal.hide();
+            showNotification('Export completed successfully!', 'success');
+        } else {
+            // Handle no data case
+            showNotification(result.error || 'No data found for export', 'warning');
+        }
+    })
+    .catch(error => {
+        console.error('Export error:', error);
+        showNotification('Export failed. Please try again.', 'error');
+    })
+    .finally(() => {
+        // Reset button state
         exportBtn.innerHTML = originalText;
         exportBtn.disabled = false;
-        bootstrap.Modal.getInstance(document.getElementById('exportModal')).hide();
-        showToast('Export completed successfully!', 'success');
-    }, 2000);
+    });
 }
 
-// Initialize when modal is shown
-document.getElementById('exportModal').addEventListener('shown.bs.modal', function () {
-    initializeExportModal();
-});
+// Utility function to show notifications
+function showNotification(message, type = 'info') {
+    // Check if showToast function exists (from your existing code)
+    if (typeof showToast === 'function') {
+        showToast(message, type);
+    } else {
+        // Fallback to alert if showToast is not available
+        if (type === 'error') {
+            alert('Error: ' + message);
+        } else if (type === 'success') {
+            alert('Success: ' + message);
+        } else {
+            alert(message);
+        }
+    }
+}
 
 // Function to open export modal (called from your existing code)
 function openExportModal() {
     new bootstrap.Modal(document.getElementById('exportModal')).show();
 }
-
         function backupSettings() {
             if (confirm('Create a backup of your current settings?')) {
                 showToast('Settings backup created successfully!', 'success');

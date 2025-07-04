@@ -462,6 +462,292 @@ $months = [
         padding: 15px;
     }
 }
+=======
+    <style>
+        body { background-color: #f8f9fa; }
+        /* Enhanced Modern Sidebar Styles */
+.sidebar {
+    background: linear-gradient(145deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    backdrop-filter: blur(20px);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 
+        0 0 40px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 280px;
+    z-index: 1000;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+}
+
+.sidebar::-webkit-scrollbar {
+    width: 4px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 2px;
+}
+
+/* Sidebar Header Enhancement */
+.sidebar .sidebar-header {
+    padding: 25px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+}
+
+.sidebar .logo-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.sidebar .logo-icon {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    font-size: 18px;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.sidebar .logo-text {
+    font-size: 20px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.sidebar .company-tagline {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.6);
+    margin-top: 5px;
+    letter-spacing: 0.5px;
+}
+
+/* Close Button for Mobile */
+.sidebar-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 35px;
+    height: 35px;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: none;
+}
+
+.sidebar-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+}
+
+/* Enhanced Navigation */
+.sidebar .nav-link {
+    color: rgba(255, 255, 255, 0.8);
+    padding: 15px 20px;
+    border-radius: 12px;
+    margin: 5px 15px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.sidebar .nav-link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.5s;
+}
+
+.sidebar .nav-link:hover::before {
+    left: 100%;
+}
+
+.sidebar .nav-link:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    transform: translateX(5px);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+}
+
+.sidebar .nav-link.active {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+}
+
+.sidebar .nav-link.active::before {
+    display: none;
+}
+
+.sidebar .nav-link i {
+    width: 20px;
+    margin-right: 12px;
+    font-size: 16px;
+}
+
+/* System Status Section */
+.sidebar .system-status {
+    padding: 20px;
+    margin-top: auto;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar .uptime-display {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar .uptime-title {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.6);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+}
+
+.sidebar .uptime-value {
+    font-size: 14px;
+    font-weight: 600;
+    color: #4ade80;
+    display: flex;
+    align-items: center;
+}
+
+.sidebar .uptime-value i {
+    margin-right: 8px;
+    font-size: 12px;
+}
+
+.sidebar .status-indicator {
+    width: 8px;
+    height: 8px;
+    background: #4ade80;
+    border-radius: 50%;
+    margin-right: 8px;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+/* User Info Enhancement */
+.sidebar .user-info {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 15px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar .user-info .user-avatar {
+    width: 35px;
+    height: 35px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+    font-size: 14px;
+    color: #fff;
+    font-weight: 600;
+}
+
+.sidebar .user-info .user-details {
+    flex: 1;
+}
+
+.sidebar .user-info .user-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 2px;
+}
+
+.sidebar .user-info .user-role {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* Main Content Adjustment */
+.main-content {
+    margin-left: 280px;
+    padding: 20px;
+    background: #f8f9fa;
+    min-height: 100vh;
+    transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%);
+        width: 280px;
+    }
+    
+    .sidebar.show {
+        transform: translateX(0);
+    }
+    
+    .sidebar-close {
+        display: block;
+    }
+    
+    .main-content {
+        margin-left: 0;
+        padding: 15px;
+    }
+    
+    .sidebar .nav-link {
+        margin: 5px 10px;
+        padding: 12px 15px;
+    }
+    
+    .sidebar .system-status {
+        padding: 15px;
+    }
+}
++
++/* Responsive margin for VAT Management header buttons */
++@media (max-width: 768px) {
++    .d-flex.justify-content-between.align-items-center.mb-4 > div {
++        margin-top: 10px;
++        display: flex;
++        flex-direction: column;
++        gap: 10px;
++    }
++}
 
 /* Mobile Menu Toggle Button */
 .mobile-menu-toggle {
@@ -766,15 +1052,15 @@ $months = [
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h2><i class="fas fa-receipt me-2"></i>VAT Management</h2>
                     <?php if ($selectedClient): ?>
-                        <div>
-                            <button class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#addVATModal">
-                                <i class="fas fa-plus me-2"></i>Add VAT Entry
-                            </button>
-        <a href="/cal/utils/vat_export.php?client_id=<?php echo urlencode($filters['client_id']); ?>&year=<?php echo urlencode($filters['year']); ?>&format=pdf" 
-           class="btn btn-primary" target="_blank">
-                                <i class="fas fa-download me-2"></i>Export Report
-                            </a>
-                        </div>
+                <div class="d-flex flex-column flex-md-row gap-2">
+                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addVATModal">
+                        <i class="fas fa-plus me-2"></i>Add VAT Entry
+                    </button>
+    <a href="/cal/utils/vat_export.php?client_id=<?php echo urlencode($filters['client_id']); ?>&year=<?php echo urlencode($filters['year']); ?>&format=pdf" 
+       class="btn btn-primary" target="_blank">
+                        <i class="fas fa-download me-2"></i>Export Report
+                    </a>
+                </div>
                     <?php endif; ?>
                 </div>
 

@@ -410,7 +410,7 @@ $stats = $client->getStats();
                         <p class="text-muted mb-0">Manage and organize your client database</p>
                     </div>
                     <div class="btn-group">
-                        <button class="btn btn-outline-primary" onclick="exportClients()">
+                        <button style="margin-bottom:10px;"class="btn btn-outline-primary" onclick="exportClients()">
                             <i class="fas fa-download me-2"></i>Export
                         </button>
                         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addClientModal">

@@ -41,10 +41,8 @@ function toggleSidebar() {
         sidebar.classList.toggle('show');
         overlay.classList.toggle('show');
         
-        // Prevent body scroll when sidebar is open on mobile
-        if (window.innerWidth <= 768) {
-            document.body.style.overflow = sidebar.classList.contains('show') ? 'hidden' : 'auto';
-        }
+        // Prevent body scroll when sidebar is open
+        document.body.style.overflow = sidebar.classList.contains('show') ? 'hidden' : 'auto';
     }
 }
 
@@ -92,10 +90,16 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+
+    // Add click event listener to sidebar close button
+    const sidebarCloseBtn = document.querySelector('.sidebar-close');
+    if (sidebarCloseBtn) {
+        sidebarCloseBtn.addEventListener('click', closeSidebar);
+    }
     
     // Add escape key listener to close sidebar
     document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && window.innerWidth <= 768) {
+        if (e.key === 'Escape') {
             closeSidebar();
         }
     });
