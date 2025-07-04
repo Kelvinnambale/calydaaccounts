@@ -1,5 +1,11 @@
 {
-    "require": {
-        "mpdf/mpdf": "^8.0"
+  "require": {
+    
+    "phpoffice/phpspreadsheet": "^1.25"
+  },
+  "autoload": {
+    "psr-4": {
+      "": "classes/"
     }
+  }
 }

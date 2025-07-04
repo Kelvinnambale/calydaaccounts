@@ -25,6 +25,46 @@ Database::getInstance()->createTables();
 
 $client = new Client();
 
+// CSV Export functionality
+if (isset($_GET['export']) && $_GET['export'] === 'csv') {
+    $filters = [
+        'search' => $_GET['search'] ?? '',
+        'client_type' => $_GET['client_type'] ?? '',
+        'tax_obligation' => $_GET['tax_obligation'] ?? '',
+        'county' => $_GET['county'] ?? '',
+        'etims_status' => $_GET['etims_status'] ?? '',
+        'date_from' => $_GET['date_from'] ?? '',
+        'date_to' => $_GET['date_to'] ?? ''
+    ];
+    $clientsData = $client->getAll($filters);
+
+    header('Content-Type: text/csv; charset=utf-8');
+    header('Content-Disposition: attachment; filename="clients_export_' . date('Y-m-d') . '.csv"');
+    header('Cache-Control: no-cache, must-revalidate');
+    header('Expires: 0');
+
+    $output = fopen('php://output', 'w');
+
+    // CSV header row
+    fputcsv($output, ['Full Name', 'KRA PIN', 'Phone Number', 'Email Address', 'Client Type', 'County', 'ETIMS Status', 'Registration Date']);
+
+    foreach ($clientsData as $clientRow) {
+        fputcsv($output, [
+            $clientRow['full_name'],
+            $clientRow['kra_pin'],
+            $clientRow['phone_number'],
+            $clientRow['email_address'],
+            $clientRow['client_type'],
+            $clientRow['county'],
+            $clientRow['etims_status'],
+            date('Y-m-d', strtotime($clientRow['registration_date']))
+        ]);
+    }
+
+    fclose($output);
+    exit;
+}
+
 // Handle bulk actions
 if ($_POST['bulk_action'] ?? '' && !empty($_POST['selected_clients'])) {
     $selectedClients = $_POST['selected_clients'];
@@ -818,7 +858,11 @@ $stats = $client->getStats();
             </div>
         </div>
     </div>
-    <!-- Quick Actions Menu -->
+    <button class="btn btn-primary quick-actions-btn" id="quickActionsBtn" onclick="toggleQuickActions()">
+    <i class="fas fa-plus" id="quickActionsIcon"></i>
+</button>
+
+<!-- Quick Actions Menu -->
 <div class="quick-actions-menu" id="quickActionsMenu">
     <button class="quick-action-item" onclick="openAddClientModal()">
         <i class="fas fa-user-plus"></i>
@@ -850,6 +894,7 @@ $stats = $client->getStats();
         <span>Settings</span>
     </button>
 </div>
+
     <script src="./js/script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
@@ -1173,7 +1218,7 @@ function exportData() {
 
 function openSettings() {
     toggleQuickActions();
-    window.location.href = '../settings.php';
+    window.location.href = './settings.php';
 }
 
 // Update the existing showToast function to handle 'info' type

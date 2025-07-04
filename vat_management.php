@@ -1084,6 +1084,43 @@ $months = [
             </div>
         </div>
     </div>
+    <button class="btn btn-primary quick-actions-btn" id="quickActionsBtn" onclick="toggleQuickActions()">
+    <i class="fas fa-plus" id="quickActionsIcon"></i>
+</button>
+
+<!-- Quick Actions Menu -->
+<div class="quick-actions-menu" id="quickActionsMenu">
+    <button class="quick-action-item" onclick="openAddClientModal()">
+        <i class="fas fa-user-plus"></i>
+        <span>Manage Clients</span>
+    </button>
+    
+    <button class="quick-action-item" onclick="openVATManagement()">
+        <i class="fas fa-receipt"></i>
+        <span>VAT Management</span>
+    </button>
+    
+    <button class="quick-action-item" onclick="generateReport()">
+        <i class="fas fa-chart-line"></i>
+        <span>Generate Report</span>
+    </button>
+    
+    <button class="quick-action-item" onclick="bulkImport()">
+        <i class="fas fa-upload"></i>
+        <span>Bulk Import</span>
+    </button>
+    
+    <button class="quick-action-item" onclick="exportData()">
+        <i class="fas fa-download"></i>
+        <span>Export Data</span>
+    </button>
+    
+    <button class="quick-action-item" onclick="openSettings()">
+        <i class="fas fa-cog"></i>
+        <span>Settings</span>
+    </button>
+</div>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
@@ -1390,5 +1427,107 @@ function debounce(func, wait) {
 // Use debounced resize handler
 window.addEventListener('resize', debounce(handleResize, 250));
     </script>
+    <script>
+let quickActionsOpen = false;
+
+function toggleQuickActions() {
+    const menu = document.getElementById('quickActionsMenu');
+    const icon = document.getElementById('quickActionsIcon');
+    
+    if (quickActionsOpen) {
+        menu.classList.remove('show');
+        icon.classList.remove('fa-times');
+        icon.classList.add('fa-plus');
+        quickActionsOpen = false;
+    } else {
+        menu.classList.add('show');
+        icon.classList.remove('fa-plus');
+        icon.classList.add('fa-times');
+        quickActionsOpen = true;
+    }
+}
+
+// Close menu when clicking outside
+document.addEventListener('click', function(e) {
+    const menu = document.getElementById('quickActionsMenu');
+    const btn = document.getElementById('quickActionsBtn');
+    
+    if (!menu.contains(e.target) && !btn.contains(e.target)) {
+        if (quickActionsOpen) {
+            toggleQuickActions();
+        }
+    }
+});
+
+// Quick Action Functions
+function openAddClientModal() {
+    toggleQuickActions();
+    window.location.href = './clients.php';
+}
+
+function openVATManagement() {
+    toggleQuickActions();
+    window.location.href = 'vat_management.php';
+}
+
+function generateReport() {
+    toggleQuickActions();
+    window.location.href = './reports.php';
+}
+
+function bulkImport() {
+    toggleQuickActions();
+    // Add bulk import functionality
+    showToast('Bulk import feature coming soon!', 'info');
+}
+
+function exportData() {
+    toggleQuickActions();
+    // Add export functionality
+    const currentDate = new Date().toISOString().split('T')[0];
+    const filename = `clients_export_${currentDate}.csv`;
+    
+    // Create CSV content
+    let csvContent = "Full Name,KRA PIN,Phone,Email,Client Type,County,ETIMS Status,Registration Date\n";
+    
+    // You can get the clients data from your PHP and add to CSV
+    // For now, showing a placeholder
+    showToast('Export functionality will be implemented based on your data structure', 'info');
+}
+
+function openSettings() {
+    toggleQuickActions();
+    window.location.href = './settings.php';
+}
+
+// Update the existing showToast function to handle 'info' type
+function showToast(message, type) {
+    const toast = document.createElement('div');
+    let alertClass = 'alert-primary';
+    
+    switch(type) {
+        case 'success':
+            alertClass = 'alert-success';
+            break;
+        case 'error':
+            alertClass = 'alert-danger';
+            break;
+        case 'info':
+            alertClass = 'alert-info';
+            break;
+        default:
+            alertClass = 'alert-primary';
+    }
+    
+    toast.className = `alert ${alertClass} position-fixed`;
+    toast.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+    toast.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close ms-2" onclick="this.parentElement.remove()"></button>
+    `;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 5000);
+}
+</script>
 </body>
 </html>
