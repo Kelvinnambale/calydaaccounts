@@ -672,10 +672,7 @@ $months = [
     <div class="container-fluid">
         <div class="row">
             <!-- Sidebar -->
-            <!-- Mobile Menu Toggle Button -->
-<button class="mobile-menu-toggle d-md-none" onclick="toggleSidebar()">
-    <i class="fas fa-bars"></i>
-</button>
+ 
 
 <!-- Sidebar Overlay for Mobile -->
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
@@ -693,7 +690,7 @@ $months = [
                 <i class="fas fa-building"></i>
             </div>
             <div>
-                <div class="logo-text">Calyda Accounts</div>
+                <div class="logo-text" style="margin-top:40px;">Calyda Accounts</div>
                 <div class="company-tagline">Professional Tax Solutions</div>
             </div>
         </div>

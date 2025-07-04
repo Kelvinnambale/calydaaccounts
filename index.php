@@ -61,22 +61,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             min-height: 100vh;
             display: flex;
             align-items: center;
+            justify-content: center;
+            padding: 20px;
         }
         .login-container {
             background: white;
             border-radius: 15px;
             box-shadow: 0 15px 35px rgba(0,0,0,0.1);
             overflow: hidden;
-            height: 600px;
-            max-width: 1200px;
+            max-width: 100%;
+            width: 100%;
+            max-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
         .brand-section {
             background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
             color: white;
             padding: 2rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
         .login-section {
             padding: 2rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
         .btn-login {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -92,6 +105,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .form-control:focus {
             border-color: #667eea;
             box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+        @media (max-width: 768px) {
+            .login-container {
+                height: auto;
+                max-height: none;
+                flex-direction: column;
+            }
+            .brand-section, .login-section {
+                flex: none;
+                width: 100%;
+                padding: 1.5rem;
+            }
         }
     </style>
 </head>

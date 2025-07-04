@@ -301,16 +301,7 @@ $stats = $client->getStats();
 <body>
     <div class="container-fluid">
         <div class="row">
-            <!-- Sidebar -->
-            <!-- Mobile Menu Toggle Button -->
-<button class="mobile-menu-toggle d-md-none" onclick="toggleSidebar()">
-    <i class="fas fa-bars"></i>
-</button>
-
-<!-- Sidebar Overlay for Mobile -->
-<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
-
-<!-- Enhanced Sidebar -->
+            <!-- Enhanced Sidebar -->
 <div class="col-md-3 col-lg-2 px-0 sidebar" id="sidebar">
     <!-- Sidebar Header -->
     <div class="sidebar-header">
@@ -323,7 +314,7 @@ $stats = $client->getStats();
                 <i class="fas fa-building"></i>
             </div>
             <div>
-                <div class="logo-text">Calyda Accounts</div>
+                <div class="logo-text" style="margin-top:40px">Calyda Accounts</div>
                 <div class="company-tagline">Professional Tax Solutions</div>
             </div>
         </div>
@@ -332,12 +323,12 @@ $stats = $client->getStats();
     <!-- Navigation -->
     <nav class="sidebar-nav">
         <div class="nav-item">
-            <a class="nav-link" href="./dashboard.php">
+            <a class="nav-link active" href="dashboard.php">
                 <i class="fas fa-tachometer-alt"></i>Dashboard
             </a>
         </div>
         <div class="nav-item">
-            <a class="nav-link active" href="clients.php">
+            <a class="nav-link" href="clients.php">
                 <i class="fas fa-users"></i>Client Management
             </a>
         </div>
@@ -347,21 +338,22 @@ $stats = $client->getStats();
             </a>
         </div>
         <div class="nav-item">
-            <a class="nav-link" href="./reports.php">
+            <a class="nav-link" href="reports.php">
                 <i class="fas fa-chart-bar"></i>Reports
             </a>
         </div>
         <div class="nav-item">
-            <a class="nav-link" href="./settings.php">
+            <a class="nav-link" href="settings.php">
                 <i class="fas fa-cog"></i>Settings
             </a>
         </div>
         <div class="nav-item">
-            <a class="nav-link" href="./logout.php">
+            <a class="nav-link" href="logout.php">
                 <i class="fas fa-sign-out-alt"></i>Logout
             </a>
         </div>
     </nav>
+
 
     <!-- System Status Section -->
     <div class="system-status">
